@@ -326,37 +326,22 @@
     }
 
     function moveNo(){
-  const rect = card.getBoundingClientRect();
-  const btnRect = noBtn.getBoundingClientRect();
-  const pad = 20;
+     const rect = card.getBoundingClientRect();
+     const btnRect = noBtn.getBoundingClientRect();
 
-  const cardWidth = rect.width;
-  const cardHeight = rect.height;
+     const pad = 20;
 
-  let x, y;
+     const maxX = rect.width - btnRect.width - pad;
+     const maxY = rect.height - btnRect.height - pad;
 
-  // Genera punto casuale nel triangolo superiore della card
-  // Triangolo: base in basso, punta in alto centro
+     // Coordinate casuali ma sempre visibili
+     const x = Math.random() * maxX;
+     const y = Math.random() * maxY;
 
-  const r1 = Math.random();
-  const r2 = Math.random();
-
-  // Formula per punto uniforme dentro triangolo
-  const sqrtR1 = Math.sqrt(r1);
-
-  const xTri = (1 - sqrtR1) * (cardWidth / 2) +
-               sqrtR1 * ( (1 - r2) * 0 + r2 * cardWidth );
-
-  const yTri = sqrtR1 * cardHeight * 0.8;
-
-  // Limiti per non far uscire il bottone
-  x = Math.min(Math.max(pad, xTri), cardWidth - btnRect.width - pad);
-  y = Math.min(Math.max(pad, yTri), cardHeight - btnRect.height - pad);
-
-  noBtn.style.position = 'absolute';
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
-}
+     noBtn.style.position = "absolute";
+     noBtn.style.left = x + "px";
+     noBtn.style.top = y + "px";
+    }
 
     function moveNoAndTalk(){
       noBtn.textContent = nextNoPhrase();
