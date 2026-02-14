@@ -1,144 +1,497 @@
 <!doctype html>
 <html lang="it">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>San Valentino 💘</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>💘 San Valentino</title>
+  <style>
+    :root{
+      --bg1:#ff2d55;
+      --bg2:#7c3aed;
+      --card: rgba(255,255,255,.14);
+      --stroke: rgba(255,255,255,.28);
+      --txt: rgba(255,255,255,.95);
+      --muted: rgba(255,255,255,.80);
+      --shadow: 0 30px 80px rgba(0,0,0,.35);
+    }
 
-<style>
-body{
-  margin:0;
-  overflow:hidden;
-  font-family:Arial, sans-serif;
-  background:linear-gradient(135deg,#ff2d55,#7c3aed);
-  color:white;
-  text-align:center;
-}
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--txt);
+      overflow:hidden;
+      background:
+        radial-gradient(1200px 800px at 15% 15%, rgba(255,255,255,.14), transparent 60%),
+        radial-gradient(900px 700px at 85% 20%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+    }
 
-.screen{
-  position:absolute;
-  width:100%;
-  height:100%;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  transition:opacity .5s;
-}
+    .wrap{
+      position:relative;
+      height:100%;
+      display:grid;
+      place-items:center;
+      padding:24px;
+    }
 
-.hidden{opacity:0; pointer-events:none;}
+    .card{
+      width:min(680px, 94vw);
+      border:1px solid var(--stroke);
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 28px 26px 26px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+      animation: breathe 4.2s ease-in-out infinite;
+    }
 
-button{
-  padding:12px 20px;
-  margin:10px;
-  border:none;
-  border-radius:12px;
-  font-size:16px;
-  cursor:pointer;
-}
+    @keyframes breathe{
+      0%,100%{ transform: translateY(0) scale(1); }
+      50%{ transform: translateY(-6px) scale(1.01); }
+    }
 
-.yes{background:white;color:#ff2d55;font-weight:bold;}
-.no{background:black;color:white;}
+    .glow{
+      position:absolute; inset:-60px;
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.28), transparent 40%),
+                  radial-gradient(circle at 70% 80%, rgba(255,255,255,.18), transparent 45%);
+      filter: blur(10px);
+      opacity:.7;
+      pointer-events:none;
+    }
 
-.rain{
-  position:fixed;
-  top:-60px;
-  font-size:40px;
-  pointer-events:none;
-  animation:fall linear forwards;
-}
+    h1{
+      margin: 6px 0 10px;
+      font-size: clamp(26px, 4vw, 40px);
+      letter-spacing:.2px;
+    }
+    p{
+      margin: 0 auto 18px;
+      max-width: 52ch;
+      color: var(--muted);
+      font-size: clamp(14px, 2vw, 18px);
+      line-height: 1.45;
+    }
 
-@keyframes fall{
-  to{ transform:translateY(110vh); }
-}
+    .name{
+      display:inline-block;
+      padding:6px 12px;
+      border:1px solid rgba(255,255,255,.25);
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: rgba(255,255,255,.92);
+    }
 
-.eye{
-  position:absolute;
-  font-size:12px;
-}
+    .buttons{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top: 16px;
+      position: relative;
+      min-height: 54px; /* per evitare salti quando NO diventa absolute */
+    }
 
-.fall-img{
-  width:60px;
-  height:auto;
-  pointer-events:none;
-  animation:spin 2s linear infinite;
-}
+    button{
+      border:1px solid rgba(255,255,255,.25);
+      background: rgba(255,255,255,.12);
+      color: var(--txt);
+      padding: 12px 18px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-size: 16px;
+      transition: transform .15s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+      touch-action:manipulation;
+      min-width: 150px;
+      position: relative;
+    }
+    button:hover{ transform: translateY(-2px); background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
+    button:active{ transform: translateY(0px) scale(.99); }
 
-@keyframes spin{
-  from{ transform:rotate(0deg);}
-  to{ transform:rotate(360deg);}
-}
+    .yes{
+      background: rgba(255,255,255,.22);
+      border-color: rgba(255,255,255,.42);
+      font-weight: 650;
+    }
 
-</style>
+    .footer{
+      margin-top: 16px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,.72);
+    }
+
+    /* Cuori che salgono */
+    .heart{
+      position:absolute;
+      left: var(--x);
+      bottom: -30px;
+      font-size: var(--s);
+      opacity: 0;
+      animation: floatUp var(--t) linear forwards;
+      filter: drop-shadow(0 10px 12px rgba(0,0,0,.25));
+      pointer-events:none;
+    }
+
+    @keyframes floatUp{
+      0%   { transform: translate(0,0) scale(.8) rotate(0deg); opacity: 0; }
+      10%  { opacity: .95; }
+      100% { transform: translate(var(--dx), -120vh) scale(1.25) rotate(var(--r)); opacity: 0; }
+    }
+
+    /* ===== Seconda schermata ===== */
+    .screen{
+      position: fixed;
+      inset:0;
+      display:none;
+      place-items:center;
+      padding:24px;
+      z-index: 70;
+      background:
+        radial-gradient(1200px 800px at 15% 15%, rgba(255,255,255,.14), transparent 60%),
+        radial-gradient(900px 700px at 85% 20%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+    }
+    .screen.show{ display:grid; }
+
+    .screenCard{
+      width:min(720px, 94vw);
+      border:1px solid var(--stroke);
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 28px 26px 22px;
+      text-align:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* ===== Pioggia immagini ===== */
+    .drop{
+      position: fixed;
+      top: -140px;
+      left: 0;
+      z-index: 90;
+      pointer-events:none;
+      will-change: transform;
+      filter: drop-shadow(0 10px 12px rgba(0,0,0,.25));
+    }
+    .drop img{
+      width: var(--w, 72px);
+      height:auto;
+      display:block;
+      transform-origin: center;
+    }
+    .drop .eyes{
+      position:absolute;
+      left: 50%;
+      top: 16%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      opacity: .95;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,.25));
+      mix-blend-mode: screen;
+      pointer-events:none;
+    }
+    .hint{
+      margin-top: 14px;
+      font-size: 12.5px;
+      color: rgba(255,255,255,.75);
+    }
+  </style>
 </head>
 <body>
+  <!-- Prima schermata -->
+  <div class="wrap" id="wrap">
+    <div class="card" id="card">
+      <div class="glow"></div>
 
-<div class="screen" id="first">
-  <h1>Biggia vuoi essere il mio Valentino? 💘</h1>
-  <button class="yes" id="yesBtn">SÌ</button>
-  <button class="no" id="noBtn">NO</button>
-</div>
+      <h1 id="title">Biggia vuoi essere il mio Valentino?</h1>
+      <p id="subtitle">
+        Prometto: coccole, risate, e una dose illegale di dolcezza.
+        (E se dici sì, ho una sorpresa.)
+      </p>
 
-<div class="screen hidden" id="second">
-  <h1>EVVIVA! Allora ci vediamo più tardi 😏</h1>
-  <div>
-    <button onclick="startRain('dick')">PIPO 🍆</button>
-    <button onclick="startRain('ass')">CULO 🍑</button>
-    <button onclick="startRain('balls')">PALLE 🥜</button>
+      <div class="buttons" id="btnRow">
+        <button class="yes" id="yesBtn">Sì</button>
+        <button class="no" id="noBtn">No</button>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-const frasiNo = [
-"Pensaci meglio 😏",
-"Biggia..."
-"Ti offro il kfc 🍕",
-"dai-no... ",
-"La droga dà la droga..."
-];
+  <!-- Seconda schermata -->
+  <div class="screen" id="secondScreen" aria-hidden="true">
+    <div class="screenCard">
+      <div class="glow"></div>
+      <h1 id="secondTitle">EVVIVA! Allora ci vediamo più tardi 😏</h1>
 
-let indexNo = 0;
+      <div class="buttons">
+        <button class="yes" id="opt1Btn">OPZIONE 1</button>
+        <button class="yes" id="opt2Btn">OPZIONE 2</button>
+        <button class="yes" id="opt3Btn">OPZIONE 3</button>
+      </div>
+    </div>
+  </div>
 
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-const text = document.getElementById("text");
-const first = document.getElementById("first");
-const second = document.getElementById("second");
+  <script>
+    // ======= PERSONALIZZA QUI =======
 
-noBtn.addEventListener("click", () => {
-  text.textContent = frasiNo[indexNo];
-  indexNo = (indexNo + 1) % frasiNo.length;
-});
+    // Nome
+    const HER_NAME = "❤️"; // es: "Giulia"
 
-yesBtn.addEventListener("click",()=>{
-  first.classList.add("hidden");
-  second.classList.remove("hidden");
-});
+    // Frasi del NO (fino a 5 come vuoi). Cicla all'infinito.
+    const NO_PHRASES = [
+      "Ti offro il kfc 🍕",
+      "Biggia... ",
+      "La droga dà la droga..."
+    ];
 
-function startRain(type){
-  for(let i=0;i<40;i++){
-    createFalling(type);
-  }
-}
+    // Seconda schermata
+    const SECOND_TITLE = "EVVIVA! Allora ci vediamo più tardi 😏";
+    const SECOND_SUBTITLE = "Scegli una delle 3 opzioni 👇";
 
-function createFalling(type){
-  const el = document.createElement("div");
-  el.classList.add("rain");
+    // Testi pulsanti
+    const OPT1_TEXT = "PALLE";
+    const OPT2_TEXT = "CULO";
+    const OPT3_TEXT = "PIPO";
 
- if(type==="dick") el.innerHTML = '<img src="assets/dick.png" class="fall-img">';
- if(type==="ass") el.innerHTML = '<img src="assets/ass.png" class="fall-img">';
- if(type==="balls") el.innerHTML = '<img src="assets/balls.png" class="fall-img">';
- 
-  el.style.left=Math.random()*100+"vw";
-  el.style.animationDuration=(2+Math.random()*2)+"s";
+    // Percorsi immagini (mettile in /assets)
+    const ASSETS = {
+      opt1: "assets/balls.png",
+      opt2: "assets/ass.png",
+      opt3: "assets/dick.png"
+    };
 
-  document.body.appendChild(el);
+    // Intensità pioggia
+    const BURST_ON_START = 18;  // quante subito
+    const BURST_EACH_TICK = 6;  // quante per tick
+    const TICK_MS = 180;        // velocità continua
 
-  setTimeout(()=>el.remove(),4000);
-}
+    // Dimensione immagini che cadono (px)
+    const DROP_MIN_W = 54;
+    const DROP_MAX_W = 86;
 
+    // =====================================
 
-</script>
+    const herNameEl = document.getElementById('herName');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const wrap = document.getElementById('wrap');
+    const subtitle = document.getElementById('subtitle');
+    const card = document.getElementById('card');
+    const btnRow = document.getElementById('btnRow');
 
+    const secondScreen = document.getElementById('secondScreen');
+    const secondTitle = document.getElementById('secondTitle');
+    const secondSubtitle = document.getElementById('secondSubtitle');
+
+    const opt1Btn = document.getElementById('opt1Btn');
+    const opt2Btn = document.getElementById('opt2Btn');
+    const opt3Btn = document.getElementById('opt3Btn');
+
+    herNameEl.textContent = HER_NAME || "Biggia";
+    secondTitle.textContent = SECOND_TITLE;
+    secondSubtitle.textContent = SECOND_SUBTITLE;
+    opt1Btn.textContent = OPT1_TEXT;
+    opt2Btn.textContent = OPT2_TEXT;
+    opt3Btn.textContent = OPT3_TEXT;
+
+    // ===== Cuori come il tuo =====
+    const heartChars = ["💗","💖","💘","💝","💞","💕","❤️"];
+    function spawnHeart(intense=false){
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = heartChars[(Math.random()*heartChars.length)|0];
+      const x = (Math.random()*100).toFixed(2) + 'vw';
+      const s = (12 + Math.random()*22).toFixed(0) + 'px';
+      const t = (3 + Math.random()*4).toFixed(2) + 's';
+      const dx = ((Math.random()*2-1) * 14).toFixed(2) + 'vw';
+      const r = ((Math.random()*2-1) * 40).toFixed(0) + 'deg';
+      h.style.setProperty('--x', x);
+      h.style.setProperty('--s', s);
+      h.style.setProperty('--t', t);
+      h.style.setProperty('--dx', dx);
+      h.style.setProperty('--r', r);
+      wrap.appendChild(h);
+      h.addEventListener('animationend', () => h.remove());
+      if(intense){
+        if(Math.random() < 0.5) setTimeout(() => spawnHeart(false), 80);
+      }
+    }
+    setInterval(() => spawnHeart(false), 420);
+
+    // ===== NO: scappa + frasi infinite =====
+    let noPhraseIndex = 0;
+    function nextNoPhrase(){
+      const phrase = NO_PHRASES[noPhraseIndex];
+      noPhraseIndex = (noPhraseIndex + 1) % NO_PHRASES.length;
+      return phrase;
+    }
+
+    function moveNo(){
+      // limiti dentro la card
+      const rect = card.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+      const pad = 14;
+
+      // posizione random *dentro la card*
+      const maxX = rect.width - btnRect.width - pad*2;
+      const maxY = rect.height - btnRect.height - pad*2;
+
+      const x = pad + Math.random()*Math.max(0, maxX);
+      const y = pad + Math.random()*Math.max(0, maxY);
+
+      // posizioniamo rispetto alla card
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+    }
+
+    function moveNoAndTalk(){
+      subtitle.textContent = nextNoPhrase();
+      moveNo();
+      spawnHeart(false);
+    }
+
+    // scappa al passaggio
+    noBtn.addEventListener('mouseenter', () => moveNoAndTalk());
+
+    // scappa anche al click
+    noBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      moveNoAndTalk();
+    });
+
+    // mobile
+    noBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      moveNoAndTalk();
+    }, {passive:false});
+
+    // ===== SI: apre seconda schermata =====
+    yesBtn.addEventListener('click', () => {
+      // piccolo burst cuori
+      for(let i=0;i<24;i++) setTimeout(() => spawnHeart(true), i*25);
+
+      // mostra schermata 2
+      setTimeout(() => {
+        secondScreen.classList.add('show');
+        secondScreen.setAttribute('aria-hidden', 'false');
+      }, 300);
+    });
+
+    // ===== Pioggia continua =====
+    let rainInterval = null;
+    let currentAsset = null;
+
+    function rand(min, max){ return min + Math.random()*(max-min); }
+
+    function spawnDrop(assetPath){
+      const drop = document.createElement('div');
+      drop.className = 'drop';
+
+      const w = Math.round(rand(DROP_MIN_W, DROP_MAX_W));
+      drop.style.setProperty('--w', w + 'px');
+
+      // start X random
+      const x = rand(0, window.innerWidth);
+      const startY = -160;
+
+      // fisica semplice: caduta + sway + rotazione
+      const duration = rand(2200, 3600); // ms
+      const drift = rand(-120, 120);     // px
+      const rot = rand(-180, 180);       // deg
+      const swayAmp = rand(10, 26);      // px
+      const swaySpeed = rand(0.006, 0.012);
+
+      drop.style.left = (x) + 'px';
+
+      // immagine
+      const img = document.createElement('img');
+      img.src = assetPath;
+      img.alt = "";
+      img.draggable = false;
+
+      drop.appendChild(eyes);
+      document.body.appendChild(drop);
+
+      const start = performance.now();
+
+      function animate(t){
+        const elapsed = t - start;
+        const p = Math.min(1, elapsed / duration);
+
+        const y = startY + p * (window.innerHeight + 240);
+        const sway = Math.sin(elapsed * swaySpeed * 1000) * swayAmp;
+        const dx = drift * p;
+
+        drop.style.transform = `translate(${dx + sway}px, ${y}px) rotate(${rot * p}deg)`;
+
+        if(p < 1){
+          requestAnimationFrame(animate);
+        }else{
+          drop.remove();
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+
+    function startRain(assetPath){
+      currentAsset = assetPath;
+      stopRain();
+
+      // burst iniziale
+      for(let i=0;i<BURST_ON_START;i++) spawnDrop(currentAsset);
+
+      // continua finché non rilasci
+      rainInterval = setInterval(() => {
+        for(let i=0;i<BURST_EACH_TICK;i++) spawnDrop(currentAsset);
+      }, TICK_MS);
+    }
+
+    function stopRain(){
+      if(rainInterval){
+        clearInterval(rainInterval);
+        rainInterval = null;
+      }
+    }
+
+    // stop su rilascio
+    window.addEventListener('mouseup', stopRain);
+    window.addEventListener('touchend', stopRain);
+    window.addEventListener('touchcancel', stopRain);
+
+    // Bind pulsanti: tieni premuto / touch
+    function bindRainButton(btn, assetPath){
+      btn.addEventListener('mousedown', () => startRain(assetPath));
+      btn.addEventListener('mouseenter', (e) => {
+        // se stai già tenendo premuto e passi sopra, continua con quello
+        if(e.buttons === 1) startRain(assetPath);
+      });
+      btn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        startRain(assetPath);
+      }, {passive:false});
+
+      // click singolo = piccolo burst
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        for(let i=0;i<14;i++) spawnDrop(assetPath);
+      });
+    }
+
+    bindRainButton(opt1Btn, ASSETS.opt1);
+    bindRainButton(opt2Btn, ASSETS.opt2);
+    bindRainButton(opt3Btn, ASSETS.opt3);
+
+    // se ridimensioni finestra, niente di speciale: i drop calcolano ogni frame.
+  </script>
 </body>
 </html>
