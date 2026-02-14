@@ -220,7 +220,7 @@
     <div class="screenCard">
       <div class="glow"></div>
       <h1 id="secondTitle">EVVIVA! Allora ci vediamo più tardi 😏</h1>
-      <p id="secondSubtitle">Palle, pipo o culo?</p>
+      <p id="secondSubtitle"></p>
 
       <div class="buttons">
         <button class="yes" id="opt1Btn">OPZIONE 1</button>
@@ -245,7 +245,7 @@
 
     // Seconda schermata
     const SECOND_TITLE = "EVVIVA! Allora ci vediamo più tardi 😏";
-    const SECOND_SUBTITLE = "Scegli una delle 3 opzioni 👇";
+    const SECOND_SUBTITLE = "Palle, pipo o culo?";
 
     // Testi pulsanti
     const OPT1_TEXT = "PALLE";
@@ -431,7 +431,7 @@
         const p = Math.min(1, elapsed / duration);
 
         const y = startY + p * (window.innerHeight + 240);
-        
+
         drop.style.transform = `translate(0px, ${y}px) rotate(${rot * p}deg)`;
 
         if(p < 1){
