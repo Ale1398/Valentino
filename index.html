@@ -326,26 +326,40 @@
     }
 
     function moveNo(){
-      // limiti dentro la card
-      const rect = card.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
-      const pad = 14;
+  const rect = card.getBoundingClientRect();
+  const btnRect = noBtn.getBoundingClientRect();
+  const pad = 20;
 
-      // posizione random *dentro la card*
-      const maxX = rect.width - btnRect.width - pad*2;
-      const maxY = rect.height - btnRect.height - pad*2;
+  const cardWidth = rect.width;
+  const cardHeight = rect.height;
 
-      const x = pad + Math.random()*Math.max(0, maxX);
-      const y = pad + Math.random()*Math.max(0, maxY);
+  let x, y;
 
-      // posizioniamo rispetto alla card
-      noBtn.style.position = 'absolute';
-      noBtn.style.left = x + 'px';
-      noBtn.style.top = y + 'px';
-    }
+  // Genera punto casuale nel triangolo superiore della card
+  // Triangolo: base in basso, punta in alto centro
+
+  const r1 = Math.random();
+  const r2 = Math.random();
+
+  // Formula per punto uniforme dentro triangolo
+  const sqrtR1 = Math.sqrt(r1);
+
+  const xTri = (1 - sqrtR1) * (cardWidth / 2) +
+               sqrtR1 * ( (1 - r2) * 0 + r2 * cardWidth );
+
+  const yTri = sqrtR1 * cardHeight * 0.8;
+
+  // Limiti per non far uscire il bottone
+  x = Math.min(Math.max(pad, xTri), cardWidth - btnRect.width - pad);
+  y = Math.min(Math.max(pad, yTri), cardHeight - btnRect.height - pad);
+
+  noBtn.style.position = 'absolute';
+  noBtn.style.left = x + 'px';
+  noBtn.style.top = y + 'px';
+}
 
     function moveNoAndTalk(){
-      subtitle.textContent = nextNoPhrase();
+      noBtn.textContent = nextNoPhrase();
       moveNo();
       spawnHeart(false);
     }
@@ -396,10 +410,8 @@
 
       // fisica semplice: caduta + sway + rotazione
       const duration = rand(2200, 3600); // ms
-      const drift = rand(-120, 120);     // px
       const rot = rand(-180, 180);       // deg
-      const swayAmp = rand(10, 26);      // px
-      const swaySpeed = rand(0.006, 0.012);
+      
 
       drop.style.left = (x) + 'px';
 
@@ -419,10 +431,8 @@
         const p = Math.min(1, elapsed / duration);
 
         const y = startY + p * (window.innerHeight + 240);
-        const sway = Math.sin(elapsed * swaySpeed * 1000) * swayAmp;
-        const dx = drift * p;
-
-        drop.style.transform = `translate(${dx + sway}px, ${y}px) rotate(${rot * p}deg)`;
+        
+        drop.style.transform = `translate(0px, ${y}px) rotate(${rot * p}deg)`;
 
         if(p < 1){
           requestAnimationFrame(animate);
