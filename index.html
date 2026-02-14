@@ -189,17 +189,6 @@
       display:block;
       transform-origin: center;
     }
-    .drop .eyes{
-      position:absolute;
-      left: 50%;
-      top: 16%;
-      transform: translateX(-50%);
-      font-size: 18px;
-      opacity: .95;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,.25));
-      mix-blend-mode: screen;
-      pointer-events:none;
-    }
     .hint{
       margin-top: 14px;
       font-size: 12.5px;
@@ -213,10 +202,10 @@
     <div class="card" id="card">
       <div class="glow"></div>
 
+      <div class="name">Per <span id="herName"></span> 💞</div>
       <h1 id="title">Biggia vuoi essere il mio Valentino?</h1>
       <p id="subtitle">
-        Prometto: coccole, risate, e una dose illegale di dolcezza.
-        (E se dici sì, ho una sorpresa.)
+        Prometto: coccole, risate e tanto sesso 
       </p>
 
       <div class="buttons" id="btnRow">
@@ -231,6 +220,7 @@
     <div class="screenCard">
       <div class="glow"></div>
       <h1 id="secondTitle">EVVIVA! Allora ci vediamo più tardi 😏</h1>
+      <p id="secondSubtitle">Palle, pipo o culo?</p>
 
       <div class="buttons">
         <button class="yes" id="opt1Btn">OPZIONE 1</button>
@@ -244,7 +234,7 @@
     // ======= PERSONALIZZA QUI =======
 
     // Nome
-    const HER_NAME = "❤️"; // es: "Giulia"
+    const HER_NAME = "Biggia"; // es: "Giulia"
 
     // Frasi del NO (fino a 5 come vuoi). Cicla all'infinito.
     const NO_PHRASES = [
@@ -419,7 +409,7 @@
       img.alt = "";
       img.draggable = false;
 
-      drop.appendChild(eyes);
+      drop.appendChild(img);
       document.body.appendChild(drop);
 
       const start = performance.now();
