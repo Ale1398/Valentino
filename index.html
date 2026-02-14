@@ -1,346 +1,144 @@
 <!doctype html>
 <html lang="it">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>💘 San Valentino</title>
-  <style>
-    :root{
-      --bg1:#ff2d55;
-      --bg2:#7c3aed;
-      --card: rgba(255,255,255,.14);
-      --stroke: rgba(255,255,255,.28);
-      --txt: rgba(255,255,255,.95);
-      --muted: rgba(255,255,255,.80);
-      --shadow: 0 30px 80px rgba(0,0,0,.35);
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>San Valentino 💘</title>
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--txt);
-      overflow:hidden;
-      background:
-        radial-gradient(1200px 800px at 15% 15%, rgba(255,255,255,.14), transparent 60%),
-        radial-gradient(900px 700px at 85% 20%, rgba(255,255,255,.10), transparent 60%),
-        linear-gradient(135deg, var(--bg1), var(--bg2));
-    }
+<style>
+body{
+  margin:0;
+  overflow:hidden;
+  font-family:Arial, sans-serif;
+  background:linear-gradient(135deg,#ff2d55,#7c3aed);
+  color:white;
+  text-align:center;
+}
 
-    .wrap{
-      position:relative;
-      height:100%;
-      display:grid;
-      place-items:center;
-      padding:24px;
-    }
+.screen{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  transition:opacity .5s;
+}
 
-    .card{
-      width:min(680px, 94vw);
-      border:1px solid var(--stroke);
-      background: var(--card);
-      backdrop-filter: blur(16px);
-      border-radius: 26px;
-      box-shadow: var(--shadow);
-      padding: 28px 26px 26px;
-      text-align:center;
-      position:relative;
-      overflow:hidden;
-      animation: breathe 4.2s ease-in-out infinite;
-    }
+.hidden{opacity:0; pointer-events:none;}
 
-    @keyframes breathe{
-      0%,100%{ transform: translateY(0) scale(1); }
-      50%{ transform: translateY(-6px) scale(1.01); }
-    }
+button{
+  padding:12px 20px;
+  margin:10px;
+  border:none;
+  border-radius:12px;
+  font-size:16px;
+  cursor:pointer;
+}
 
-    .glow{
-      position:absolute; inset:-60px;
-      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.28), transparent 40%),
-                  radial-gradient(circle at 70% 80%, rgba(255,255,255,.18), transparent 45%);
-      filter: blur(10px);
-      opacity:.7;
-      pointer-events:none;
-    }
+.yes{background:white;color:#ff2d55;font-weight:bold;}
+.no{background:black;color:white;}
 
-    h1{
-      margin: 6px 0 10px;
-      font-size: clamp(26px, 4vw, 40px);
-      letter-spacing:.2px;
-    }
-    p{
-      margin: 0 auto 18px;
-      max-width: 52ch;
-      color: var(--muted);
-      font-size: clamp(14px, 2vw, 18px);
-      line-height: 1.45;
-    }
+.rain{
+  position:fixed;
+  top:-60px;
+  font-size:40px;
+  pointer-events:none;
+  animation:fall linear forwards;
+}
 
-    .name{
-      display:inline-block;
-      padding:6px 12px;
-      border:1px solid rgba(255,255,255,.25);
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      margin-bottom: 10px;
-      font-size: 14px;
-      color: rgba(255,255,255,.92);
-    }
+@keyframes fall{
+  to{ transform:translateY(110vh); }
+}
 
-    .buttons{
-      display:flex;
-      gap:12px;
-      justify-content:center;
-      flex-wrap:wrap;
-      margin-top: 16px;
-    }
+.eye{
+  position:absolute;
+  font-size:12px;
+}
 
-    button{
-      border:1px solid rgba(255,255,255,.25);
-      background: rgba(255,255,255,.12);
-      color: var(--txt);
-      padding: 12px 18px;
-      border-radius: 14px;
-      cursor:pointer;
-      font-size: 16px;
-      transition: transform .15s ease, background .2s ease, border-color .2s ease;
-      user-select:none;
-      touch-action:manipulation;
-      min-width: 150px;
-      position: relative;
-    }
-    button:hover{ transform: translateY(-2px); background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.35); }
-    button:active{ transform: translateY(0px) scale(.99); }
+.fall-img{
+  width:60px;
+  height:auto;
+  pointer-events:none;
+  animation:spin 2s linear infinite;
+}
 
-    .yes{
-      background: rgba(255,255,255,.22);
-      border-color: rgba(255,255,255,.42);
-      font-weight: 650;
-    }
+@keyframes spin{
+  from{ transform:rotate(0deg);}
+  to{ transform:rotate(360deg);}
+}
 
-    .no{
-      position: relative;
-    }
-
-    .footer{
-      margin-top: 16px;
-      font-size: 12.5px;
-      color: rgba(255,255,255,.72);
-    }
-
-    /* Cuori che salgono */
-    .heart{
-      position:absolute;
-      left: var(--x);
-      bottom: -30px;
-      font-size: var(--s);
-      opacity: 0;
-      animation: floatUp var(--t) linear forwards;
-      filter: drop-shadow(0 10px 12px rgba(0,0,0,.25));
-      pointer-events:none;
-    }
-
-    @keyframes floatUp{
-      0%   { transform: translate(0,0) scale(.8) rotate(0deg); opacity: 0; }
-      10%  { opacity: .95; }
-      100% { transform: translate(var(--dx), -120vh) scale(1.25) rotate(var(--r)); opacity: 0; }
-    }
-
-    /* Modal finale */
-    .modal{
-      position: fixed;
-      inset:0;
-      display:none;
-      place-items:center;
-      background: rgba(0,0,0,.35);
-      backdrop-filter: blur(6px);
-      z-index: 50;
-      padding: 24px;
-    }
-    .modal.show{ display:grid; }
-    .modalBox{
-      width:min(720px, 95vw);
-      border-radius: 26px;
-      background: rgba(255,255,255,.14);
-      border: 1px solid rgba(255,255,255,.25);
-      box-shadow: var(--shadow);
-      padding: 24px;
-      text-align:center;
-    }
-    .big{
-      font-size: clamp(22px, 4vw, 34px);
-      margin: 6px 0 10px;
-      font-weight: 750;
-    }
-    .kiss{
-      font-size: 44px;
-      margin: 6px 0 10px;
-      animation: pop 900ms ease-in-out infinite alternate;
-    }
-    @keyframes pop{ from{ transform: scale(1);} to{ transform: scale(1.08);} }
-
-    a.small{
-      color: rgba(255,255,255,.9);
-      text-decoration: none;
-      border-bottom: 1px dotted rgba(255,255,255,.6);
-    }
-  </style>
+</style>
 </head>
 <body>
-  <div class="wrap" id="wrap">
-    <div class="card" id="card">
-      <div class="glow"></div>
 
-      <div class="name">Per <span id="herName">Amore mio</span> 💞</div>
+<div class="screen" id="first">
+  <h1>Biggia vuoi essere il mio Valentino? 💘</h1>
+  <button class="yes" id="yesBtn">SÌ</button>
+  <button class="no" id="noBtn">NO</button>
+</div>
 
-      <h1 id="title">Vuoi essere il mio Valentino?</h1>
-      <p id="subtitle">
-        Prometto: coccole, risate, e una dose illegale di dolcezza.  
-        (E se dici sì, ho una sorpresa.)
-      </p>
-
-      <div class="buttons">
-        <button class="yes" id="yesBtn">Sì 💘</button>
-        <button class="no" id="noBtn">No 🙃</button>
-      </div>
-
-      <div class="footer">
-        Suggerimento: aprilo con l’audio attivo 🔊 (se vuoi, c’è un “ding” quando dice sì).
-      </div>
-    </div>
+<div class="screen hidden" id="second">
+  <h1>EVVIVA! Allora ci vediamo più tardi 😏</h1>
+  <div>
+    <button onclick="startRain('dick')">PIPO 🍆</button>
+    <button onclick="startRain('ass')">CULO 🍑</button>
+    <button onclick="startRain('balls')">PALLE 🥜</button>
   </div>
+</div>
 
-  <div class="modal" id="modal">
-    <div class="modalBox">
-      <div class="kiss">💋</div>
-      <div class="big" id="finalTitle">Sapevo che avresti detto sì! 💘</div>
-      <p id="finalText">
-        Sei la mia persona preferita.  
-        Stasera festeggiamo? 🍓✨
-      </p>
-      <p style="margin-top:14px;">
-        <a class="small" href="#" id="restart">Rigioca</a>
-      </p>
-    </div>
-  </div>
+<script>
+const frasiNo = [
+"Pensaci meglio 😏",
+"Biggia..."
+"Ti offro il kfc 🍕",
+"dai-no... ",
+"La droga dà la droga..."
+];
 
-  <audio id="ding" preload="auto">
-    <source src="data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YQAAAAA=" type="audio/wav">
-  </audio>
+let indexNo = 0;
 
-  <script>
-    // ======= TODO: personalizza qui =======
-    const HER_NAME = "❤️"; // es: "Giulia"
-    const FROM_NAME = "io"; // es: "Marco"
-    const FINAL_TITLE = "EVVIVA! Sei il mio Valentino 💘";
-    const FINAL_TEXT = `Ok ${HER_NAME || ""}! Allora è ufficiale: io e te. 
-Ci vediamo stasera? 😘`;
-    // =====================================
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const text = document.getElementById("text");
+const first = document.getElementById("first");
+const second = document.getElementById("second");
 
-    const herNameEl = document.getElementById('herName');
-    const yesBtn = document.getElementById('yesBtn');
-    const noBtn = document.getElementById('noBtn');
-    const wrap = document.getElementById('wrap');
-    const modal = document.getElementById('modal');
-    const finalTitleEl = document.getElementById('finalTitle');
-    const finalTextEl = document.getElementById('finalText');
-    const restart = document.getElementById('restart');
-    const ding = document.getElementById('ding');
+noBtn.addEventListener("click", () => {
+  text.textContent = frasiNo[indexNo];
+  indexNo = (indexNo + 1) % frasiNo.length;
+});
 
-    herNameEl.textContent = HER_NAME || "Amore mio";
-    finalTitleEl.textContent = FINAL_TITLE;
-    finalTextEl.textContent = FINAL_TEXT.replace("io", FROM_NAME);
+yesBtn.addEventListener("click",()=>{
+  first.classList.add("hidden");
+  second.classList.remove("hidden");
+});
 
-    // Cuori in background costanti
-    const heartChars = ["💗","💖","💘","💝","💞","💕","❤️"];
-    function spawnHeart(intense=false){
-      const h = document.createElement('div');
-      h.className = 'heart';
-      h.textContent = heartChars[(Math.random()*heartChars.length)|0];
-      const x = (Math.random()*100).toFixed(2) + 'vw';
-      const s = (12 + Math.random()*22).toFixed(0) + 'px';
-      const t = (3 + Math.random()*4).toFixed(2) + 's';
-      const dx = ((Math.random()*2-1) * 14).toFixed(2) + 'vw';
-      const r = ((Math.random()*2-1) * 40).toFixed(0) + 'deg';
-      h.style.setProperty('--x', x);
-      h.style.setProperty('--s', s);
-      h.style.setProperty('--t', t);
-      h.style.setProperty('--dx', dx);
-      h.style.setProperty('--r', r);
-      wrap.appendChild(h);
-      h.addEventListener('animationend', () => h.remove());
-      if(intense){
-        // piccola scia
-        if(Math.random() < 0.5) setTimeout(() => spawnHeart(false), 80);
-      }
-    }
-    setInterval(() => spawnHeart(false), 420);
+function startRain(type){
+  for(let i=0;i<40;i++){
+    createFalling(type);
+  }
+}
 
-    // Bottone NO che scappa
-    function moveNo(){
-      const card = document.getElementById('card');
-      const rect = card.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
+function createFalling(type){
+  const el = document.createElement("div");
+  el.classList.add("rain");
 
-      // limiti dentro la card
-      const pad = 14;
-      const maxX = rect.width - btnRect.width - pad*2;
-      const maxY = rect.height - btnRect.height - pad*2;
+ if(type==="dick") el.innerHTML = '<img src="assets/dick.png" class="fall-img">';
+ if(type==="ass") el.innerHTML = '<img src="assets/ass.png" class="fall-img">';
+ if(type==="balls") el.innerHTML = '<img src="assets/balls.png" class="fall-img">';
+ 
+  el.style.left=Math.random()*100+"vw";
+  el.style.animationDuration=(2+Math.random()*2)+"s";
 
-      const x = pad + Math.random()*maxX;
-      const y = pad + Math.random()*maxY;
+  document.body.appendChild(el);
 
-      noBtn.style.position = 'absolute';
-      noBtn.style.left = x + 'px';
-      noBtn.style.top = y + 'px';
-    }
+  setTimeout(()=>el.remove(),4000);
+}
 
-    let noCount = 0;
-    noBtn.addEventListener('mouseenter', () => {
-      noCount++;
-      moveNo();
-      spawnHeart(false);
-      if(noCount >= 6){
-        noBtn.textContent = "Ok basta 😅";
-      }
-    });
-    noBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      noCount++;
-      moveNo();
-    });
 
-    // YES -> festa
-    yesBtn.addEventListener('click', async () => {
-      // prova a far partire l'audio (su mobile serve interazione -> click ok)
-      try{ ding.currentTime = 0; await ding.play(); } catch(e){}
+</script>
 
-      // esplosione cuori
-      for(let i=0;i<28;i++){
-        setTimeout(() => spawnHeart(true), i*35);
-      }
-
-      // show modal
-      setTimeout(() => modal.classList.add('show'), 420);
-    });
-
-    restart.addEventListener('click', (e) => {
-      e.preventDefault();
-      modal.classList.remove('show');
-      // reset NO
-      noBtn.style.position = 'relative';
-      noBtn.style.left = '';
-      noBtn.style.top = '';
-      noBtn.textContent = "No 🙃";
-      noCount = 0;
-    });
-
-    // Touch devices: fai scappare anche al tap sul NO
-    noBtn.addEventListener('touchstart', (e) => {
-      e.preventDefault();
-      moveNo();
-    }, {passive:false});
-  </script>
 </body>
 </html>
